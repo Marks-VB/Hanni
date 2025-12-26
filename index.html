@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanni 18tão - Bem-vinda à Vida Adulta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .font-comic {
+            font-family: 'Bangers', cursive;
+            letter-spacing: 2px;
+        }
+
+        .siren-bg {
+            animation: police-flash 0.5s infinite;
+        }
+
+        @keyframes police-flash {
+            0% { background-color: #ef4444; } /* Red */
+            50% { background-color: #3b82f6; } /* Blue */
+            100% { background-color: #ef4444; }
+        }
+
+        .glitch {
+            position: relative;
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-2deg); }
+            40% { transform: skew(2deg); }
+            60% { transform: skew(0deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        .stamp {
+            border: 4px solid #ef4444;
+            color: #ef4444;
+            transform: rotate(-15deg);
+            display: inline-block;
+            padding: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+
+        .stamp.visible {
+            opacity: 1;
+            animation: stamp-slam 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes stamp-slam {
+            0% { transform: scale(3) rotate(-15deg); opacity: 0; }
+            100% { transform: scale(1) rotate(-15deg); opacity: 1; }
+        }
+
+        .card-shadow {
+            box-shadow: 10px 10px 0px 0px rgba(0,0,0,1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative" id="mainBody">
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti" class="absolute top-0 left-0 w-full h-full pointer-events-none z-10"></canvas>
+
+    <!-- Main Container -->
+    <main class="max-w-2xl w-full bg-slate-800 border-4 border-yellow-400 p-6 md:p-10 rounded-lg shadow-2xl z-20 relative card-shadow text-center">
+        
+        <!-- Header -->
+        <div class="mb-8 relative">
+            <span class="absolute -top-6 -right-6 text-6xl rotate-12 filter drop-shadow-lg">🔞</span>
+            <h1 class="text-6xl md:text-8xl font-comic text-yellow-400 text-shadow mb-2 glitch">HANNI FEZ 18!</h1>
+            <p class="text-xl md:text-2xl text-slate-300 font-bold">O CPF AGORA RESPONDE POR SI!</p>
+        </div>
+
+        <!-- The "Benefits" List -->
+        <div class="bg-slate-900 p-6 rounded-md border-2 border-dashed border-slate-600 mb-8 text-left space-y-4">
+            <h2 class="text-2xl font-bold text-center mb-6 text-pink-500 uppercase border-b border-slate-700 pb-2">✨ Desbloqueios da Nova Fase ✨</h2>
+            
+            <div class="flex items-center gap-4 hover:bg-slate-800 p-2 rounded transition cursor-pointer group" onclick="toggleSiren()">
+                <div class="text-4xl bg-slate-700 p-2 rounded group-hover:scale-110 transition">🚓</div>
+                <div>
+                    <h3 class="font-bold text-lg text-red-400">Pode ser PRESA</h3>
+                    <p class="text-sm text-slate-400">O Estatuto da Criança e do Adolescente não te protege mais. Cuidado com as blitz!</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 hover:bg-slate-800 p-2 rounded transition cursor-pointer group">
+                <div class="text-4xl bg-slate-700 p-2 rounded group-hover:scale-110 transition">🚬</div>
+                <div>
+                    <h3 class="font-bold text-lg text-green-400">Cigarro & "Coisinhas"</h3>
+                    <p class="text-sm text-slate-400">Pode comprar cigarro na padaria sem identidade falsa. O pulmão é seu, estrague como quiser!</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4 hover:bg-slate-800 p-2 rounded transition cursor-pointer group" onclick="checkSerasa()">
+                <div class="text-4xl bg-slate-700 p-2 rounded group-hover:scale-110 transition">📉</div>
+                <div>
+                    <h3 class="font-bold text-lg text-yellow-400">Nome Sujo no Serasa</h3>
+                    <p class="text-sm text-slate-400">Cartão de crédito aprovado? Grande oportunidade de dever pro banco e ficar 5 anos com o nome "restrito".</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 hover:bg-slate-800 p-2 rounded transition cursor-pointer group">
+                <div class="text-4xl bg-slate-700 p-2 rounded group-hover:scale-110 transition">💊</div>
+                <div>
+                    <h3 class="font-bold text-lg text-purple-400">Vício em Farmácia</h3>
+                    <p class="text-sm text-slate-400">Agora "droga" é Dorflex pras costas e Neosaldina pra dor de cabeça de tanto boleto.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Serasa Result Area -->
+        <div id="serasaBox" class="hidden bg-white text-black p-4 rounded mb-6 transform rotate-2">
+            <h3 class="font-bold text-lg mb-2">CONSULTA DE SCORE:</h3>
+            <div class="text-4xl font-black text-red-600">0/1000</div>
+            <p class="text-sm font-mono text-red-600 mt-1">SITUAÇÃO: NEGATIVADO COM SUCESSO</p>
+            <div id="stamp" class="stamp text-2xl mt-2 border-red-600 text-red-600">NOME SUJO</div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <button onclick="toggleSiren()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] active:shadow-none active:translate-y-1 transition transform">
+                🚨 MODO POLÍCIA
+            </button>
+            <button onclick="checkSerasa()" class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded shadow-[4px_4px_0px_0px_rgba(255,255,255,0.2)] active:shadow-none active:translate-y-1 transition transform">
+                💸 CONSULTAR NOME
+            </button>
+        </div>
+
+        <p class="mt-8 text-xs text-slate-500 italic">
+            *O criador deste site não se responsabiliza por eventuais fianças, ressacas morais ou ligações de cobrança de São Paulo (011).
+        </p>
+
+    </main>
+
+    <script>
+        // Confetti Effect
+        const canvas = document.getElementById('confetti');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const confettiPieces = [];
+        const colors = ['#ef4444', '#3b82f6', '#eab308', '#ec4899', '#ffffff'];
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 10 + 5;
+                this.speed = Math.random() * 3 + 2;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 5 - 2.5;
+            }
+            update() {
+                this.y += this.speed;
+                this.rotation += this.rotationSpeed;
+                if (this.y > canvas.height) {
+                    this.y = -10;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 100; i++) {
+            confettiPieces.push(new Confetti());
+        }
+
+        function animateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confettiPieces.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateConfetti);
+        }
+        animateConfetti();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Interactions
+        let isPoliceMode = false;
+        
+        function toggleSiren() {
+            const body = document.getElementById('mainBody');
+            isPoliceMode = !isPoliceMode;
+            
+            if (isPoliceMode) {
+                body.classList.add('siren-bg');
+                alert("🚨 ATENÇÃO HANNI! A POLÍCIA TÁ CHEGANDO! 🚨\nAgora você responde criminalmente!");
+            } else {
+                body.classList.remove('siren-bg');
+            }
+        }
+
+        function checkSerasa() {
+            const box = document.getElementById('serasaBox');
+            const stamp = document.getElementById('stamp');
+            
+            box.classList.remove('hidden');
+            stamp.classList.remove('visible');
+            
+            // Scroll to the box
+            box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            setTimeout(() => {
+                stamp.classList.add('visible');
+            }, 500);
+        }
+    </script>
+</body>
+</html>
